@@ -1,0 +1,22 @@
+*.iml
+.gradle
+.kotlin
+/local.properties
+/.idea
+/.claude
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+.cxx
+local.properties
+
+# Android signing keys and generated packages must never be committed.
+*.keystore
+*.jks
+*.apk
+*.aab
+
+# Local credentials and diagnostics.
+.env
+*.log
