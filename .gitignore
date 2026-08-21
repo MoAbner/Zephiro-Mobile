@@ -20,3 +20,6 @@ local.properties
 # Local credentials and diagnostics.
 .env
 *.log
+batterystats-*.txt
+battery-*.txt
+thermal-*.txt

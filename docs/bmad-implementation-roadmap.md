@@ -45,6 +45,21 @@ Current entry condition:
 - F001 validated with manual trigger, TTS, and local sherpa hands-free using packaged keywords
 - custom `Zephiro` wake-word assets remain a follow-up inside the voice stack, but they no longer block orchestrator work
 
+## Continuous Track - Battery and Latency
+
+Goal: benchmark each persistent workload before adding the next one.
+
+Required comparisons:
+
+- session baseline
+- preview baseline
+- preview plus hands-free
+- preview plus controlled object assistance
+- combined demo configuration
+
+The reproducible procedure is in `docs/battery-performance-test-plan.md`. Results must influence
+sampling cadence, input size, stream quality, and feature fallback rules.
+
 ## Stage 3 - OCR Slice
 
 Goal: guided document reading with spoken output.

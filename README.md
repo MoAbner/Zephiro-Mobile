@@ -78,6 +78,7 @@ necessary for reproducible team testing:
 ## Documentation
 
 - `docs/team-test-guide.md`: exact team test runbook
+- `docs/battery-performance-test-plan.md`: battery, thermal, and latency benchmark protocol
 - `docs/bmad-project-readme.md`: BMAD artifact index
 - `docs/bmad-backlog.md`: feature status
 - `docs/bmad-decision-log.md`: durable architectural decisions
