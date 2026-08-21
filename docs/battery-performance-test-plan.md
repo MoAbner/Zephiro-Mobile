@@ -10,12 +10,32 @@ with Android battery statistics, elapsed time, latency, and device temperature.
 
 - Use the same physical phone for every comparison. An emulator is useful for behavior, not battery.
 - Start each test at 80% battery or higher and do not charge while measuring.
+- Do not leave a USB cable connected during a measurement. Use Android Wireless Debugging so ADB
+  remains available without external power.
 - Keep screen brightness, volume, network, Bluetooth state, camera source, and ambient temperature
   unchanged across runs.
 - Close unrelated applications and disable battery saver.
 - Use the same MockDeviceKit feed or the same fixed physical scene.
 - Repeat each scenario three times for 10 minutes. Use 20 minutes when battery percentage changes
   are too small to observe.
+
+## Connect ADB without charging
+
+On Android 14, pair the phone through Wi-Fi before the first benchmark:
+
+1. Connect the phone and development computer to the same Wi-Fi network.
+2. On the phone, open **Settings > Developer options > Wireless debugging** and enable it.
+3. In Android Studio, open **Device Manager > Pair Devices Using Wi-Fi** and choose QR-code or
+   pairing-code mode.
+4. Confirm that `adb devices` lists the phone, then unplug the USB cable.
+5. Wait 2 minutes after disconnecting USB before resetting statistics and starting the timer.
+
+Wireless debugging itself consumes some energy, but it is acceptable for a comparative benchmark if
+it stays enabled in every scenario. Record that it was enabled in the evidence template.
+
+If Wi-Fi debugging is unavailable, run the timed test fully unplugged and collect the ADB outputs
+only after it ends. In that fallback, record battery percentage before reconnecting USB and wait for
+the phone to stop charging before reading final diagnostics.
 
 ## Scenarios
 

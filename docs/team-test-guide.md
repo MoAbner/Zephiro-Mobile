@@ -55,6 +55,10 @@ For each test, record date, phone or emulator model, Android version, camera sou
 observed spoken result, latency, and Logcat errors. Add the result to the corresponding
 `docs/bmad-feature-FXXX-*.md` record.
 
+For battery benchmarking, use a physical phone with Wireless Debugging and follow
+`docs/battery-performance-test-plan.md`. Do not benchmark with USB connected because charging
+invalidates battery-drain comparisons.
+
 ## Known limits
 
 - Packaged English wake words are the active profile. `Zephiro` is not implemented yet.
