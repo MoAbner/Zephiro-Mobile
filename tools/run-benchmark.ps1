@@ -29,15 +29,15 @@ $statePath = Join-Path $resultDirectory "$runPrefix.json"
 function Get-AdbPath {
     $candidates = @()
     if ($env:ANDROID_SDK_ROOT) {
-        $candidates += Join-Path $env:ANDROID_SDK_ROOT "platform-tools\adb.exe"
+        $candidates += (Join-Path -Path $env:ANDROID_SDK_ROOT -ChildPath "platform-tools\adb.exe")
     }
     if ($env:ANDROID_HOME) {
-        $candidates += Join-Path $env:ANDROID_HOME "platform-tools\adb.exe"
+        $candidates += (Join-Path -Path $env:ANDROID_HOME -ChildPath "platform-tools\adb.exe")
     }
     if ($env:LOCALAPPDATA) {
-        $candidates += Join-Path $env:LOCALAPPDATA "Android\Sdk\platform-tools\adb.exe"
+        $candidates += (Join-Path -Path $env:LOCALAPPDATA -ChildPath "Android\Sdk\platform-tools\adb.exe")
     }
-    $candidates = $candidates | Where-Object { Test-Path $_ }
+    $candidates = @($candidates | Where-Object { Test-Path -LiteralPath $_ })
 
     if ($candidates.Count -eq 0) {
         throw "adb.exe nao encontrado. Instale Android SDK Platform-Tools ou defina ANDROID_SDK_ROOT."
@@ -95,8 +95,7 @@ if ($Phase -eq "Begin") {
     Invoke-Adb @("shell", "dumpsys", "batterystats", "--reset") | Out-Null
     Save-AdbSnapshot "start"
 
-    Read-Host "Desconecte o USB, confirme o percentual no celular e pressione Enter para iniciar o cronometro"
-    $startBattery = Read-Host "Digite o percentual exibido no celular apos desconectar o USB"
+    $startBattery = Read-Host "Desconecte o USB e digite o percentual exibido no celular para iniciar o cronometro"
     if ($startBattery -notmatch '^\d{1,3}$' -or [int]$startBattery -gt 100) {
         throw "Percentual de bateria invalido."
     }
