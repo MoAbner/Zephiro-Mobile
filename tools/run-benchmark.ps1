@@ -114,6 +114,8 @@ if ($Phase -eq "Begin") {
     if ($RunTimer) {
         Write-Host "Aguarde $DurationMinutes minuto(s). Nao conecte o USB durante a rodada."
         Start-Sleep -Seconds ($DurationMinutes * 60)
+        $state.measurementEndedAtUtc = [DateTime]::UtcNow.ToString("o")
+        $state | ConvertTo-Json | Set-Content -Path $statePath
         Write-Host "Tempo concluido. Anote a bateria final NO CELULAR antes de reconectar o cabo." -ForegroundColor Yellow
     }
     exit 0
@@ -128,7 +130,14 @@ if ($BatteryEndPercent -lt 0) {
 
 $state = Get-Content -Raw $statePath | ConvertFrom-Json
 $startedAt = [DateTime]::Parse($state.startedAtUtc).ToUniversalTime()
-$elapsedMinutes = ([DateTime]::UtcNow - $startedAt).TotalMinutes
+$measurementEndedAt =
+    if ($state.measurementEndedAtUtc) {
+        [DateTime]::Parse($state.measurementEndedAtUtc).ToUniversalTime()
+    } else {
+        # Manual runs have no known endpoint until Finish is invoked.
+        [DateTime]::UtcNow
+    }
+$elapsedMinutes = ($measurementEndedAt - $startedAt).TotalMinutes
 if ($elapsedMinutes -le 0) {
     throw "Duracao invalida."
 }
@@ -143,7 +152,8 @@ $summary = [ordered]@{
     scenario = $state.scenario
     run = $state.run
     startedAtUtc = $state.startedAtUtc
-    finishedAtUtc = [DateTime]::UtcNow.ToString("o")
+    measurementEndedAtUtc = $measurementEndedAt.ToString("o")
+    reportsCollectedAtUtc = [DateTime]::UtcNow.ToString("o")
     elapsedMinutes = [math]::Round($elapsedMinutes, 2)
     startBatteryPercent = $state.startBatteryPercent
     endBatteryPercent = $BatteryEndPercent
