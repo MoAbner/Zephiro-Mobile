@@ -6,6 +6,8 @@ Measure the incremental cost of each edge feature on the same Android phone befo
 continuous workloads. Battery percentage alone is too coarse for short tests, so record it together
 with Android battery statistics, elapsed time, latency, and device temperature.
 
+For the concrete P2-P5 execution order and commands, use `docs/benchmark-runbook.md`.
+
 ## Controlled conditions
 
 - Use the same physical phone for every comparison. An emulator is useful for behavior, not battery.
@@ -71,6 +73,30 @@ latency, object-alert latency, number of alerts, crashes, and whether the phone 
 
 Do not commit generated `batterystats-*.txt` files. Store team evidence in the issue, shared drive,
 or a concise summary in the relevant BMAD feature record.
+
+## Semi-automated collection script
+
+Use `tools/run-benchmark.ps1` to reset Android statistics, save diagnostic snapshots, calculate
+percentage drain per hour, and keep each result out of Git in `benchmark-results/`.
+
+1. Configure the requested scenario in the app while USB is still connected.
+2. Start a run. The script resets `batterystats`, asks you to disconnect USB, then records the
+   battery percentage you read from the phone.
+
+```powershell
+.\tools\run-benchmark.ps1 -Scenario P2 -Run 1 -Phase Begin -DurationMinutes 10 -RunTimer
+```
+
+3. When the timer finishes, read and write down the percentage on the phone before reconnecting
+   USB. Reconnect it, then finish the run with that recorded value.
+
+```powershell
+.\tools\run-benchmark.ps1 -Scenario P2 -Run 1 -Phase Finish -BatteryEndPercent 89
+```
+
+For wireless ADB, use the same commands without reconnecting USB. The script does not automate
+the app interaction itself, because that would change the real camera, microphone, and speech
+workload being measured.
 
 ## Decision thresholds
 

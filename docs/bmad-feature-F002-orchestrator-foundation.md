@@ -29,18 +29,37 @@ Out of scope:
 
 ## Current Implementation Slice
 
-- a first `FeatureOrchestrator` is being introduced inside `samples/CameraAccess`
-- voice commands for `confirmar` and `cancelar` are part of the control surface
-- the first guarded transitions target conflicts between recording, preview, and future OCR/object/audio-note flows
+- `FeatureOrchestrator` is the deterministic transition agent for voice requests
+- voice commands for `confirmar`, `cancelar`, and `parar` are part of the control surface
+- preview and object assistance are explicitly compatible: the agent starts preview when needed and
+  then enables F004 without asking to replace it
+- recording and object assistance are exclusive in this MVP: the agent asks confirmation before
+  replacing one with the other
+- stopping preview or ending the session first stops dependent recording/object-assistance work
+- document reading is prepared as a future exclusive replacement of recording or object assistance
+
+## Compatibility Rules
+
+| Requested activity | Existing activity | Agent decision |
+| --- | --- | --- |
+| Object assistance | Session, no preview | Start preview, then assistance |
+| Object assistance | Preview | Keep preview and start assistance |
+| Object assistance | Recording | Ask confirmation, stop recording if confirmed |
+| Video recording | Object assistance | Ask confirmation, stop assistance if confirmed |
+| Document reading | Object assistance or recording | Ask confirmation, stop conflicting activity if confirmed |
+| Stop preview | Object assistance or recording | Stop dependent activity, then preview |
+| End session | Object assistance or recording | Stop dependent activity, then session |
 
 ## Acceptance Checks
 
-- [ ] conflicting commands are intercepted before execution
-- [ ] user can confirm or cancel a replacement by voice
-- [ ] `stop current` resolves to the most relevant active capability
+- [x] conflicting commands are intercepted before execution
+- [x] user can confirm or cancel a replacement by voice
+- [x] `stop current` resolves to the most relevant active capability
+- [ ] verify the compatibility matrix on a physical device and record results
 
 ## Known Next Steps
 
-- extend arbitration to OCR and object-assist runtimes once those features exist
+- connect the future OCR and audio-note implementations to the already defined transition rules
 - add progress beeps or spoken progress for longer tasks
-- expose orchestrator state more explicitly in the debug UI if needed
+- move UI command execution from `CameraScreen` into a dedicated orchestration ViewModel once the
+  next feature adds enough actions to justify that extra layer

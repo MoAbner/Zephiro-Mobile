@@ -5,7 +5,7 @@
 | ID | Feature | Priority | Status | Notes |
 |---|---:|---:|---|---|
 | F001 | Voice foundation: wake word, command intake, TTS | 1 | Validated | Manual + hands-free packaged sherpa flow validated; custom Zephiro keywords remain follow-up tuning |
-| F002 | Orchestrator: feature arbitration and fallbacks | 2 | In Progress | Next stage: centralize mic/camera conflicts and confirmation flow |
+| F002 | Orchestrator: feature arbitration and fallbacks | 2 | In Progress | Compatibility matrix implemented; physical-device validation remains |
 | F003 | OCR: guided document reading | 3 | Planned | Strong demo value, moderate complexity |
 | F004 | Object assistance in controlled environments | 4 | In Progress | TFLite runtime and DAT still-capture bridge are running; validation and tuning remain |
 | F005 | Audio recording, transcription, grounded Q&A | 5 | Planned | More storage and battery impact |

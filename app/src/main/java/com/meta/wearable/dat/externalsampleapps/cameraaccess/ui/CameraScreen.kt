@@ -173,6 +173,7 @@ fun CameraScreen(
                   snapshot =
                       FeatureSnapshot(
                           hasSession = latestUi.hasSession,
+                          isSessionActive = latestUi.isSessionActive,
                           isStreaming = latestUi.isStreaming,
                           isRecording = latestUi.isRecording,
                           isObjectAssistActive = objectAssistUi.isActive,

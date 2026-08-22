@@ -28,12 +28,14 @@ Expected result: command recognition and spoken response work in manual and hand
 ## F002: orchestration
 
 1. With an active session, say `descrever ambiente`.
-2. While it is active, request another feature that requires confirmation.
-3. Say `confirmar` or `cancelar`.
-4. Say `parar` and verify that the active feature is stopped.
+2. Confirm that preview remains active or is started automatically.
+3. Start recording while object assistance is active; confirm that the app asks before replacing it.
+4. Say `cancelar`, then repeat and say `confirmar`.
+5. With object assistance active, say `parar preview` and confirm that assistance stops first.
+6. Say `parar` and verify that the most relevant active feature is stopped.
 
-Expected result: the app asks before replacing an activity and obeys confirmation, cancellation,
-and stop commands.
+Expected result: preview and object assistance coexist; conflicting activities require confirmation;
+the app obeys confirmation, cancellation, and dependency-aware stop commands.
 
 ## F004: controlled object assistance
 
